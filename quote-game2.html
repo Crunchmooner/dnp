@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>How much of a Phan are you?</title>
+<style>
+  :root{--bg:#e4e7ea;--card:#fff;--ink:#16181b;--muted:#69727d;--accent:#1e78d6;--line:#c9ced4;--blank:#c5cbd1;--p1:#3a3d42;--p2:#1e78d6;--p3:#9bcf2e;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121417;--card:#1d2024;--ink:#eef1f4;--muted:#98a1ab;--accent:#4aa8ff;--line:#333940;--blank:#30363d;--p1:#8d9298;--p2:#4aa8ff;--p3:#9bcf2e}}
+  :root[data-theme="dark"]{--bg:#121417;--card:#1d2024;--ink:#eef1f4;--muted:#98a1ab;--accent:#4aa8ff;--line:#333940;--blank:#30363d;--p1:#8d9298;--p2:#4aa8ff;--p3:#9bcf2e}
+  *
+    {box-sizing:border-box}
+  body
+    {margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,'Times New Roman',serif;min-height:100vh}
+  main
+    {max-width:760px;margin:0 auto;padding:20px 16px 40px}
+  h1
+    {font-size:1.6rem;margin:0 0 4px;text-align:center}
+  .sub{text-align:center;color:var(--muted);margin:0 0 20px;font-family:system-ui,sans-serif;font-size:.9rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+  button
+    {font:600 .95rem system-ui,sans-serif;border:0;border-radius:10px;padding:11px 16px;cursor:pointer;background:var(--accent);color:#fff}
+  button.alt
+    {background:transparent;color:var(--ink);border:1px solid var(--line)}
+  button:disabled
+    {opacity:.4;cursor:default}
+  textarea
+    {width:100%;min-height:200px;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:1rem/1.5 Georgia,serif}
+  .hint{color:var(--muted);font:.85rem system-ui,sans-serif;margin:0 0 10px}
+  .players{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+  .p input
+    {width:100%;text-align:center;border:0;background:transparent;color:var(--ink);font:600 1rem system-ui,sans-serif;margin-bottom:4px}
+  .score{font-size:2.4rem;font-weight:700;color:var(--accent);line-height:1.1}
+  .pb{display:flex;gap:6px;justify-content:center;margin-top:8px}
+  .pb button{padding:8px 12px;flex:1}
+  .quote{font-size:1.5rem;line-height:1.9;min-height:140px;display:flex;flex-wrap:wrap;gap:6px 10px;align-content:flex-start}
+  .w{display:inline-block}
+  .blank{background:var(--blank);color:transparent;border-radius:6px;user-select:none}
+  .new{animation:pop .35s ease}
+  @keyframes pop{from{transform:scale(.8);opacity:0}to{transform:none;opacity:1}}
+  .pic{display:block;max-width:100%;max-height:300px;margin:0 auto 16px;border-radius:10px;object-fit:contain}
+  .author{margin-top:12px;color:var(--muted);font-style:italic;min-height:1.5em}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+  .info{margin-left:auto;font:.9rem system-ui,sans-serif;color:var(--muted)}
+  .info b{color:var(--accent)}
+  .hidden{display:none}
+
+  /* bedsheet palette: charcoal/grey on one side, blue/teal/lime/yellow on the other */
+  body{font-family:Georgia,'Times New Roman',serif;border-top:10px solid transparent;
+    border-image:linear-gradient(90deg,#16181b 0 17%,#6f747a 17% 33%,#c9ccd0 33% 50%,#1a4fc4 50% 62%,#1e9be0 62% 74%,#2fb5b0 74% 84%,#9bcf2e 84% 93%,#e3dc3a 93% 100%) 1}
+  h1{color:var(--ink)}
+  .p{border-top:5px solid var(--p1)}
+  .p:nth-child(2){border-top-color:var(--p2)}
+  .p:nth-child(3){border-top-color:var(--p3)}
+  .p:nth-child(1) .score{color:var(--p1)}
+  .p:nth-child(2) .score{color:var(--p2)}
+  .p:nth-child(3) .score{color:var(--p3)}
+  .p:nth-child(1) .pb button:not(.alt){background:var(--p1);color:#fff}
+  .p:nth-child(3) .pb button:not(.alt){background:var(--p3);color:#16181b}
+  #game>.card{border-left:6px solid var(--p1);border-right:6px solid var(--p2)}
+  .new{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<h1>How much of a Phan are you?</h1>
+<p class="sub">Can you guess the quotes before they're fully rephealed?</p>
+
+<section id="game">
+  <div class="players" id="players"></div>
+  <div class="card" style="margin-top:16px">
+    <img class="pic hidden" id="pic" alt="">
+    <div class="quote" id="quote"></div>
+    <div class="author" id="author"></div>
+    <div class="bar">
+      <button id="reveal">Reveal next word</button>
+      <button class="alt" id="all">Reveal all</button>
+      <button class="alt" id="next">Next quote →</button>
+      <span class="info" id="info"></span>
+    </div>
+  </div>
+  <div class="bar" style="justify-content:flex-end">
+    <button class="alt" id="reset">Reset scores</button>
+  </div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+let list=[],idx=0,shown=0,scores=[0,0,0],names=['Player 1','Player 2','Player 3'];
+
+// ====== EDIT YOUR QUOTES HERE ======
+// Each quote: { text: "the quote", author: "who said it", image: "images/file.jpg" }
+// author and image are optional. image is a path relative to this HTML file,
+// e.g. put your pictures in a folder called "images" next to this file.
+const QUOTES = [
+  { text: "Embrace the void and have the courage to exist.", author: "Dan", image: "images/1.jpg" },
+  { text: "I have Skittles in my mouth. Want to taste the rainbow?", author: "Phil", image: "images/2.jpg" },
+  { text: "This isn't just a drama llama this is an allpacalypse.", author: "Dan", image: "images/3.jpg" },
+  { text: "The cat whiskers, they come from within.", author: "Dan" ,image: "images/4.jpg" },
+  { text: "If I had a house I'd make every window glass", author: "Phil", image: "images/1.jpg" },
+  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/2.jpg" },
+  { text: "How many times have I said: 'oh can a match box? No but a tin can!'", author: "Dan", image: "images/3.jpg" },
+  { text: "Phil is gonna enter my female exit.", author: "Dan and Phil" ,image: "images/4.jpg" },
+  { text: "Why are you even here spider its december", author: "Dan", image: "images/1.jpg" },
+  { text: "In case you needed that profound revelation in life, don't open poisonous sticky unbreathable undigestible substances with your fricking mouth!", author: "Dan", image: "images/2.jpg" },
+  { text: "Banana abuse! Babuse!", author: "Phil", image: "images/3.jpg" },
+  { text: "Come meet me at the top, I've already started a family in that hole", author: "Phil" ,image: "images/4.jpg" },
+  { text: "Backshots in the backrooms.", author: "Phil", image: "images/1.jpg" },
+  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/2.jpg" },
+  { text: "Naughty bakers, let's get that bread.", author: "Dan", image: "images/3.jpg" },
+  { text: "Who are you talking to? Are you my angle?", author: "Dan" ,image: "images/4.jpg" },
+  { text: "Feel the avocado.", author: "Phil", image: "images/1.jpg" },
+  { text: "This is one Voldemort I would not bang", author: "Dan", image: "images/2.jpg" },
+  { text: "Spoiler alert, I'm not a straight.", author: "Dan", image: "images/3.jpg" },
+  { text: "Phil Lester, you're a genius!", author: "Dan" ,image: "images/4.jpg" },
+  { text: "There's multiverses where I'm shaking DAT ASS in your face WOOP WOOP", author: "Dan", image: "images/1.jpg" },
+  { text: "He fell forward onto the bed and his ass was just kinda twerking towards me.", author: "Phil", image: "images/2.jpg" },
+  { text: "I'm gonna suck some of the gloom out of Dan.", author: "Phil", image: "images/3.jpg" },
+  { text: "I'd rather have murdered someone, to be honest.", author: "Phil" ,image: "images/4.jpg" },
+
+  { text: "fog meat tad tea", author: "Phil", image: "images/1.jpg" },
+  { text: "You got the grippy grippy now", author: "Phil", image: "images/2.jpg" },
+  { text: "I wasnt gaying it up all over the university. I was a lowkey gay.", author: "Phil", image: "images/3.jpg" },
+  { text: "That is a talented penis you got there Phil", author: "Phil" ,image: "images/4.jpg" },
+  { text: "Embrace the void and have the courage to exist", author: "Dan", image: "images/1.jpg" },
+  { text: "Dark like my bunny soul", author: "Dan", image: "images/2.jpg" },
+  { text: "Don't cry, craft", author: "Dan and Phil", image: "images/3.jpg" },
+
+  { text: "Come meet me at the top, I've already started a family in that hole", author: "Phil" ,image: "images/4.jpg" },
+  { text: "Backshots in the backrooms", author: "Phil", image: "images/1.jpg" },
+  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/2.jpg" },
+  { text: "Naughty bakers, let's get that bread.", author: "Dan", image: "images/3.jpg" },
+  { text: "Who are you talking to? Are you my angle?", author: "Dan" ,image: "images/4.jpg" },
+  { text: "Feel the avocado.", author: "Phil", image: "images/1.jpg" },
+  { text: "This is one Voldemort I would not bang.", author: "Dan", image: "images/2.jpg" },
+  { text: "Spoiler alert, I'm not a straight.", author: "Dan", image: "images/3.jpg" },
+  { text: "Phil Lester, you're a genius!", author: "Dan" ,image: "images/4.jpg" },
+  { text: "There's multiverses where I'm shaking DAT ASS in your face WOOP WOOP", author: "Dan", image: "images/1.jpg" },
+  { text: "He fell forward onto the bed and his ass was just kinda twerking towards me.", author: "Phil", image: "images/2.jpg" },
+  { text: "I'm gonna suck some of the gloom out of Dan.", author: "Phil", image: "images/3.jpg" },
+  { text: "I'd rather have murdered someone, to be honest.", author: "Phil" ,image: "images/4.jpg" }
+
+];
+const IMAGE_MODE = "end"; // "always" = picture visible from the start, "end" = only once the quote is fully revealed
+const SHUFFLE = true; // set to false to play quotes in the order written
+// ====================================
+
+function parse(){
+  list=QUOTES.map(q=>({words:q.text.trim().split(/\s+/),author:q.author||'',image:q.image||''}));
+  if(SHUFFLE)list.sort(()=>Math.random()-.5);
+}
+function renderPlayers(){
+  $('players').innerHTML=names.map((n,i)=>`
+    <div class="p"><input value="${n}" data-i="${i}" aria-label="Player name">
+    <div class="score">${scores[i]}</div>
+    <div class="pb"><button class="alt" data-d="-1" data-i="${i}">−1</button><button data-d="1" data-i="${i}">+1</button></div></div>`).join('');
+}
+function renderQuote(newIdx){
+  const q=list[idx];
+  $('quote').innerHTML=q.words.map((w,i)=>
+    i<shown?`<span class="w ${i===newIdx?'new':''}">${w.replace(/</g,'&lt;')}</span>`
+            :`<span class="w blank">${'x'.repeat(Math.max(2,w.length))}</span>`).join('');
+  const done=shown>=q.words.length;
+  const pic=$('pic');
+  if(q.image&&(IMAGE_MODE==='always'||done)){
+    if(pic.getAttribute('src')!==q.image)pic.src=q.image;
+    pic.classList.remove('hidden');
+  }else{pic.classList.add('hidden');pic.removeAttribute('src');}
+  $('author').textContent=done&&q.author?'— '+q.author:'';
+  $('reveal').disabled=done;$('all').disabled=done;
+  $('next').disabled=idx>=list.length-1&&false;
+  const left=q.words.length-shown+1;
+  $('info').innerHTML=`Quote ${idx+1}/${list.length} · Words ${shown}/${q.words.length}</b>`;
+}
+$('reveal').onclick=()=>{shown++;renderQuote(shown-1)};
+$('all').onclick=()=>{shown=list[idx].words.length;renderQuote()};
+$('next').onclick=()=>{idx=(idx+1)%list.length;shown=0;renderQuote()};
+let resetTimer=null;
+$('reset').onclick=()=>{
+  const b=$('reset');
+  if(resetTimer){clearTimeout(resetTimer);resetTimer=null;scores=[0,0,0];renderPlayers();b.textContent='Reset scores';return;}
+  b.textContent='Click again to confirm';
+  resetTimer=setTimeout(()=>{resetTimer=null;b.textContent='Reset scores'},3000);
+};
+$('players').onclick=e=>{const b=e.target.closest('button[data-d]');if(!b)return;
+  scores[+b.dataset.i]+=+b.dataset.d;renderPlayers()};
+$('players').oninput=e=>{if(e.target.dataset.i!==undefined)names[+e.target.dataset.i]=e.target.value};
+$('pic').onerror=()=>$('pic').classList.add('hidden');
+parse();renderPlayers();renderQuote();
+</script>
+</body>
+</html>
