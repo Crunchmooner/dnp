@@ -47,7 +47,7 @@
   .info b{color:var(--accent)}
   .hidden{display:none}
 
-  /* bedsheet palette: charcoal/grey on one side, blue/teal/lime/yellow on the other */
+  /* ikea bedsheet palette: charcoal/grey on one side, blue/teal/lime/yellow on the other */
   body{font-family:Georgia,'Times New Roman',serif;border-top:10px solid transparent;
     border-image:linear-gradient(90deg,#16181b 0 17%,#6f747a 17% 33%,#c9ccd0 33% 50%,#1a4fc4 50% 62%,#1e9be0 62% 74%,#2fb5b0 74% 84%,#9bcf2e 84% 93%,#e3dc3a 93% 100%) 1}
   h1{color:var(--ink)}
@@ -91,10 +91,10 @@
 const $=id=>document.getElementById(id);
 let list=[],idx=0,shown=0,scores=[0,0,0],names=['Player 1','Player 2','Player 3'];
 
-// ====== EDIT YOUR QUOTES HERE ======
+
 // Each quote: { text: "the quote", author: "who said it", image: "images/file.jpg" }
-// author and image are optional. image is a path relative to this HTML file,
-// e.g. put your pictures in a folder called "images" next to this file.
+// author and image are optional/ image is a path relative to this file,
+
 const QUOTES = [
   { text: "Embrace the void and have the courage to exist.", author: "Dan", image: "images/1.jpg" },
   { text: "I have Skittles in my mouth. Want to taste the rainbow?", author: "Phil", image: "images/2.jpg" },
