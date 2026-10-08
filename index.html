@@ -47,7 +47,7 @@
   .info b{color:var(--accent)}
   .hidden{display:none}
 
-  /* ikea bedsheet palette: charcoal/grey on one side, blue/teal/lime/yellow on the other */
+  /* bedsheet palette: charcoal/grey on one side, blue/teal/lime/yellow on the other */
   body{font-family:Georgia,'Times New Roman',serif;border-top:10px solid transparent;
     border-image:linear-gradient(90deg,#16181b 0 17%,#6f747a 17% 33%,#c9ccd0 33% 50%,#1a4fc4 50% 62%,#1e9be0 62% 74%,#2fb5b0 74% 84%,#9bcf2e 84% 93%,#e3dc3a 93% 100%) 1}
   h1{color:var(--ink)}
@@ -91,57 +91,58 @@
 const $=id=>document.getElementById(id);
 let list=[],idx=0,shown=0,scores=[0,0,0],names=['Player 1','Player 2','Player 3'];
 
-
+// ====== EDIT YOUR QUOTES HERE ======
 // Each quote: { text: "the quote", author: "who said it", image: "images/file.jpg" }
-// author and image are optional/ image is a path relative to this file,
-
+// author and image are optional. image is a path relative to this HTML file,
+// e.g. put your pictures in a folder called "images" next to this file.
 const QUOTES = [
   { text: "Embrace the void and have the courage to exist.", author: "Dan", image: "images/1.jpg" },
   { text: "I have Skittles in my mouth. Want to taste the rainbow?", author: "Phil", image: "images/2.jpg" },
   { text: "This isn't just a drama llama this is an allpacalypse.", author: "Dan", image: "images/3.jpg" },
   { text: "The cat whiskers, they come from within.", author: "Dan" ,image: "images/4.jpg" },
-  { text: "If I had a house I'd make every window glass", author: "Phil", image: "images/1.jpg" },
-  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/2.jpg" },
-  { text: "How many times have I said: 'oh can a match box? No but a tin can!'", author: "Dan", image: "images/3.jpg" },
-  { text: "Phil is gonna enter my female exit.", author: "Dan and Phil" ,image: "images/4.jpg" },
-  { text: "Why are you even here spider its december", author: "Dan", image: "images/1.jpg" },
-  { text: "In case you needed that profound revelation in life, don't open poisonous sticky unbreathable undigestible substances with your fricking mouth!", author: "Dan", image: "images/2.jpg" },
-  { text: "Banana abuse! Babuse!", author: "Phil", image: "images/3.jpg" },
-  { text: "Come meet me at the top, I've already started a family in that hole", author: "Phil" ,image: "images/4.jpg" },
-  { text: "Backshots in the backrooms.", author: "Phil", image: "images/1.jpg" },
-  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/2.jpg" },
-  { text: "Naughty bakers, let's get that bread.", author: "Dan", image: "images/3.jpg" },
-  { text: "Who are you talking to? Are you my angle?", author: "Dan" ,image: "images/4.jpg" },
-  { text: "Feel the avocado.", author: "Phil", image: "images/1.jpg" },
-  { text: "This is one Voldemort I would not bang", author: "Dan", image: "images/2.jpg" },
-  { text: "Spoiler alert, I'm not a straight.", author: "Dan", image: "images/3.jpg" },
-  { text: "Phil Lester, you're a genius!", author: "Dan" ,image: "images/4.jpg" },
-  { text: "There's multiverses where I'm shaking DAT ASS in your face WOOP WOOP", author: "Dan", image: "images/1.jpg" },
-  { text: "He fell forward onto the bed and his ass was just kinda twerking towards me.", author: "Phil", image: "images/2.jpg" },
-  { text: "I'm gonna suck some of the gloom out of Dan.", author: "Phil", image: "images/3.jpg" },
-  { text: "I'd rather have murdered someone, to be honest.", author: "Phil" ,image: "images/4.jpg" },
+  { text: "If I had a house I'd make every window glass", author: "Phil", image: "images/5.jpg" },
+  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/6.jpg" },
+  { text: "How many times have I said: 'oh can a match box? No but a tin can! Fucking meteors.'", author: "Dan", image: "images/7.jpg" },
 
-  { text: "fog meat tad tea", author: "Phil", image: "images/1.jpg" },
-  { text: "You got the grippy grippy now", author: "Phil", image: "images/2.jpg" },
-  { text: "I wasnt gaying it up all over the university. I was a lowkey gay.", author: "Phil", image: "images/3.jpg" },
-  { text: "That is a talented penis you got there Phil", author: "Phil" ,image: "images/4.jpg" },
-  { text: "Embrace the void and have the courage to exist", author: "Dan", image: "images/1.jpg" },
-  { text: "Dark like my bunny soul", author: "Dan", image: "images/2.jpg" },
-  { text: "Don't cry, craft", author: "Dan and Phil", image: "images/3.jpg" },
+  { text: "Phil is gonna enter my female exit.", author: "Dan and Phil" ,image: "images/8.jpg" },
+  { text: "Why are you even here spider its december", author: "Dan", image: "images/9.jpg" },
+  { text: "In case you needed that profound revelation in life, don't open poisonous sticky unbreathable undigestible substances with your fricking mouth!", author: "Dan", image: "images/10.jpg" },
+  { text: "Banana abuse! Babuse!", author: "Phil", image: "images/11.jpg" },
+  { text: "Come meet me at the top, I've already started a family in that hole", author: "Phil" ,image: "images/12.jpg" },
+  { text: "Backshots in the backrooms.", author: "Phil", image: "images/13.jpg" },
+  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/14.jpg" },
+  { text: "Naughty bakers, let's get that bread.", author: "Dan", image: "images/15.jpg" },
+  { text: "Who are you talking to? Are you my angle?", author: "Dan" ,image: "images/16.jpg" },
+  { text: "Feel the avocado.", author: "Phil", image: "images/17.jpg" },
+  { text: "This is one Voldemort I would not bang", author: "Dan", image: "images/18.jpg" },
+  { text: "Spoiler alert, I'm not a straight.", author: "Dan", image: "images/19.jpg" },
+  { text: "Phil Lester, you're a genius!", author: "Dan" ,image: "images/20.jpg" },
+  { text: "There's multiverses where I'm shaking DAT ASS in your face WOOP WOOP", author: "Dan", image: "images/21.jpg" },
+  { text: "He fell forward onto the bed and his ass was just kinda twerking towards me.", author: "Phil", image: "images/22.jpg" },
+  { text: "I'm gonna suck some of the gloom out of Dan.", author: "Phil", image: "images/23.jpg" },
+  { text: "I'd rather have murdered someone, to be honest.", author: "Phil" ,image: "images/24.jpg" },
 
-  { text: "Come meet me at the top, I've already started a family in that hole", author: "Phil" ,image: "images/4.jpg" },
-  { text: "Backshots in the backrooms", author: "Phil", image: "images/1.jpg" },
-  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/2.jpg" },
-  { text: "Naughty bakers, let's get that bread.", author: "Dan", image: "images/3.jpg" },
-  { text: "Who are you talking to? Are you my angle?", author: "Dan" ,image: "images/4.jpg" },
-  { text: "Feel the avocado.", author: "Phil", image: "images/1.jpg" },
-  { text: "This is one Voldemort I would not bang.", author: "Dan", image: "images/2.jpg" },
-  { text: "Spoiler alert, I'm not a straight.", author: "Dan", image: "images/3.jpg" },
-  { text: "Phil Lester, you're a genius!", author: "Dan" ,image: "images/4.jpg" },
-  { text: "There's multiverses where I'm shaking DAT ASS in your face WOOP WOOP", author: "Dan", image: "images/1.jpg" },
-  { text: "He fell forward onto the bed and his ass was just kinda twerking towards me.", author: "Phil", image: "images/2.jpg" },
-  { text: "I'm gonna suck some of the gloom out of Dan.", author: "Phil", image: "images/3.jpg" },
-  { text: "I'd rather have murdered someone, to be honest.", author: "Phil" ,image: "images/4.jpg" }
+  { text: "fog meat tad tea", author: "Phil", image: "images/25.jpg" },
+  { text: "You got the grippy grippy now", author: "Phil", image: "images/26.jpg" },
+  { text: "I wasnt gaying it up all over the university. I was a lowkey gay.", author: "Phil", image: "images/27.jpg" },
+  { text: "That is a talented penis you got there Phil", author: "Phil" ,image: "images/28.jpg" },
+  { text: "Embrace the void and have the courage to exist", author: "Dan", image: "images/29.jpg" },
+  { text: "Dark like my bunny soul", author: "Dan", image: "images/30.jpg" },
+  { text: "Don't cry, craft", author: "Dan and Phil", image: "images/31.jpg" },
+
+  { text: "Come meet me at the top, I've already started a family in that hole", author: "Phil" ,image: "images/32.jpg" },
+  { text: "Backshots in the backrooms", author: "Phil", image: "images/33.jpg" },
+  { text: "Do nothing willy nilly, silly Philly", author: "Dan", image: "images/34.jpg" },
+  { text: "Naughty bakers, let's get that bread.", author: "Dan", image: "images/35.jpg" },
+  { text: "Who are you talking to? Are you my angle?", author: "Dan" ,image: "images/36.jpg" },
+  { text: "Feel the avocado.", author: "Phil", image: "images/37.jpg" },
+  { text: "This is one Voldemort I would not bang.", author: "Dan", image: "images/38.jpg" },
+  { text: "Spoiler alert, I'm not a straight.", author: "Dan", image: "images/39.jpg" },
+  { text: "Phil Lester, you're a genius!", author: "Dan" ,image: "images/40.jpg" },
+  { text: "There's multiverses where I'm shaking DAT ASS in your face WOOP WOOP", author: "Dan", image: "images/41.jpg" },
+  { text: "He fell forward onto the bed and his ass was just kinda twerking towards me.", author: "Phil", image: "images/42.jpg" },
+  { text: "I'm gonna suck some of the gloom out of Dan.", author: "Phil", image: "images/43.jpg" },
+  { text: "I'd rather have murdered someone, to be honest.", author: "Phil" ,image: "images/44.jpg" }
 
 ];
 const IMAGE_MODE = "end"; // "always" = picture visible from the start, "end" = only once the quote is fully revealed
